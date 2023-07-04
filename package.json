@@ -1,0 +1,36 @@
+{
+  "name": "entry-test-product",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev:windows": "npx env-cmd -x next dev -p $PORT",
+    "dev": "npx env-cmd -x next dev -p '$PORT'",
+    "build": "next build",
+    "start": "npx env-cmd -x next start -p '$PORT'",
+    "lint": "next lint",
+    "prettier:src": "npx prettier --config .prettierrc --write ./pages",
+    "fix": "npx eslint --fix ./src --ext .js --ext .jsx"
+  },
+  "dependencies": {
+    "@ant-design/icons": "^5.1.4",
+    "antd": "^5.6.4",
+    "axios": "^1.4.0",
+    "case": "^1.6.3",
+    "dayjs": "^1.11.9",
+    "eslint": "^8.44.0",
+    "eslint-config-next": "^13.4.8",
+    "iron-session": "^6.3.1",
+    "lodash": "^4.17.21",
+    "next": "13.4.8",
+    "react": "18.2.0",
+    "react-dom": "18.2.0",
+    "react-quill": "^2.0.0"
+  },
+  "devDependencies": {
+    "env-cmd": "^10.1.0",
+    "eslint-plugin-import": "^2.27.5",
+    "eslint-plugin-unicorn": "^47.0.0",
+    "eslint-plugin-unused-imports": "^2.0.0",
+    "prettier": "^2.8.8"
+  }
+}
