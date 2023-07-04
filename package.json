@@ -1,5 +1,5 @@
 {
-  "name": "entry-test-product",
+  "name": "kostzy-backoffice",
   "version": "0.1.0",
   "private": true,
   "scripts": {
@@ -8,7 +8,7 @@
     "build": "next build",
     "start": "npx env-cmd -x next start -p '$PORT'",
     "lint": "next lint",
-    "prettier:src": "npx prettier --config .prettierrc --write ./pages",
+    "prettier:src": "npx prettier --config .prettierrc --write ./src",
     "fix": "npx eslint --fix ./src --ext .js --ext .jsx"
   },
   "dependencies": {

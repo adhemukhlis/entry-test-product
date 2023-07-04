@@ -5,6 +5,4 @@
 			"@/*": ["./src/*"]
 		}
 	},
-	"exclude": ["./out/**/*", "./node_modules/**/*", "cypress/**/*.ts"],
-	"include": ["**/*.js", "**/*.jsx", "src/pages/api/upload.js.old"]
 }
