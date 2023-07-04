@@ -2,8 +2,6 @@ import { Typography } from 'antd'
 
 const { Title, Text } = Typography
 const Index = () => {
-
-
 	return (
 		<>
 			<div
@@ -15,12 +13,7 @@ const Index = () => {
 					flexDirection: 'column'
 				}}>
 				<Title>Entry Test</Title>
-				<span>
-				
-					<Text>Dashboard</Text>
-				</span>
 			</div>
-
 		</>
 	)
 }

@@ -1,5 +1,4 @@
 import { Button, Card, Checkbox, Col, Form, Input, Row } from 'antd'
-import Image from 'next/image'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import axios from 'axios'
@@ -65,17 +64,6 @@ const LoginPage = () => {
 						padding: 0,
 						width: '100%'
 					}}>
-					<div
-						style={{
-							padding: '1rem',
-							display: 'flex',
-							justifyContent: 'center',
-							alignItems: 'center',
-							borderRadius: '8px',
-							backgroundColor: '#61B4F7'
-						}}>
-						<Image src="/logo.png" width={150} height={93} alt="logo" />
-					</div>
 					<div
 						style={{
 							display: 'flex',

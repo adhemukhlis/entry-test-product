@@ -14,7 +14,8 @@ const App = ({ Component, pageProps }) => {
 			<ConfigProvider
 				theme={{
 					token: {
-						fontFamily: 'verdana'
+						fontFamily: 'verdana',
+						colorPrimary: '#F7911A',
 					}
 				}}>
 				{PUBLIC_PAGE_URL.includes(router.pathname) ? (
