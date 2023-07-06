@@ -14,12 +14,12 @@ const LoginPage = () => {
 	const [isLoading, setIsLoading] = useState(false)
 	const handleSubmit = async (values) => {
 		setIsLoading(true)
-		const { email, password, remember_me, captcha } = values
+		const { email, password, remember_me } = values
 		axios
 			.request({
 				method: 'post',
 				url: '/api/auth/login',
-				data: { email, password, captcha }
+				data: { email, password }
 			})
 			.then((res) => {
 				if (res.status === 200) {
@@ -36,7 +36,6 @@ const LoginPage = () => {
 			.catch((err) => {
 				errorModal(err)
 				setIsLoading(false)
-				form.setFieldValue('captcha', undefined)
 			})
 	}
 	useEffect(() => {
@@ -144,7 +143,7 @@ const LoginPage = () => {
 
 export default LoginPage
 export const getServerSideProps = withSession(async function ({ req }) {
-	const access_token = req.session?.auth?.access_token
+	const access_token = req.session?.auth?.access
 	const isLoggedOut = !access_token
 	const validator = [isLoggedOut]
 

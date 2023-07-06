@@ -7,7 +7,7 @@ const sessionOptions = {
 		httpOnly: process.env.NODE_ENV === 'production',
 		sameSite: process.env.NODE_ENV === 'production' ? 'Strict' : 'Lax',
 		// maxAge : in seconds
-		maxAge: 60 * 60 * 24
+		maxAge: 600
 	}
 }
 export default sessionOptions

@@ -30,7 +30,6 @@ const axiosGroup = async (axiosRequests) => {
 					return _res
 				})
 				.catch((err) => {
-					console.log(err.response)
 					const {
 						response: {
 							data,

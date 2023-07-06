@@ -1,28 +1,29 @@
 import { Button, Card, Col, Form, Input, Row, Typography, message } from 'antd'
 import axios from 'axios'
-import { useState } from 'react'
 import { useRouter } from 'next/router'
+import { useState } from 'react'
+
 const { Title } = Typography
 
 const Forgot = () => {
-	const router = useRouter()
 	const [loading, setLoading] = useState(false)
+	const router = useRouter()
 	const [form] = Form.useForm()
 	const onFinish = async (values) => {
+		const { old_password, new_password } = values
 		setLoading(true)
 		return await axios
 			.request({
 				method: 'post',
-				url: '/api/auth/forgot-password-reset',
+				url: '/api/auth/ubah-password',
 				data: {
-					...values,
-					email: router.query.email,
-					token: router.query.token
+					old_password,
+					new_password
 				}
 			})
 			.then((res) => {
 				if (res.status === 200) {
-					message.success(res.data.message, 5)
+					message.success(res.data.data.msg, 5)
 					form.resetFields()
 				}
 			})
@@ -35,9 +36,9 @@ const Forgot = () => {
 	}
 	return (
 		<Row justify={'center'} align="middle" style={{ minHeight: '100vh', width: '100%' }}>
-			<Col {...{ sm: 22, md: 18, lg: 12 }}>
+			<Col {...{ sm: 22, md: 16, lg: 10 }}>
 				<Card>
-					<Title level={3}>Reset Password</Title>
+					<Title level={3}>Ubah Password</Title>
 					<Form
 						form={form}
 						labelCol={{
@@ -49,7 +50,14 @@ const Forgot = () => {
 						onFinish={onFinish}
 						autoComplete="off"
 						colon={false}
-						disabled={loading}>
+						disabled={loading}
+						labelAlign="left">
+						<Form.Item
+							label="Password Lama"
+							name="old_password"
+							rules={[{ type: 'string', required: true, message: 'Please input your password!' }]}>
+							<Input.Password />
+						</Form.Item>
 						<Form.Item
 							label="New Password"
 							name="new_password"
@@ -71,7 +79,7 @@ const Forgot = () => {
 										if (!value || getFieldValue('new_password') === value) {
 											return Promise.resolve()
 										}
-										return Promise.reject(new Error('The two passwords that you entered do not match!'))
+										return Promise.reject(new Error('The confirm passwords that you entered do not match with new password!'))
 									}
 								})
 							]}>
@@ -79,15 +87,15 @@ const Forgot = () => {
 						</Form.Item>
 						<Form.Item
 							wrapperCol={{
-								offset: 8,
-								span: 16
+								offset: 4,
+								span: 20
 							}}>
 							<div style={{ display: 'flex', flexDirection: 'row-reverse', gap: '0.8rem' }}>
 								<Button type="primary" htmlType="submit" loading={loading}>
-									Send
+									Simpan
 								</Button>
-								<Button disabled={loading} onClick={() => router.push('/login')}>
-									Back to Login
+								<Button disabled={loading} onClick={() => router.back()}>
+									Back
 								</Button>
 							</div>
 						</Form.Item>

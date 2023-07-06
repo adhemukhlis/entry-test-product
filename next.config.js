@@ -7,6 +7,16 @@ const nextConfig = {
 		API_HOST: process.env.NEXT_PUBLIC_API_HOST,
 		SESSION_KEY: process.env.SESSION_KEY
 	},
+	images: {
+		remotePatterns: [
+			{
+				protocol: 'http',
+				hostname: 'api-entrytest.sandboxindonesia.id',
+				port: '',
+				pathname: '/media/tourist_object/**'
+			}
+		]
+	},
 	eslint: {
 		dirs: ['.']
 	},

@@ -2,13 +2,16 @@ import apiService from '@/utils/apiService'
 import { withSessionRoute } from '@/utils/session-wrapper'
 
 export default withSessionRoute(async (req, res) => {
-	const { email, callback_url } = req.body
+	const { old_password, new_password } = req.body
 	if (req.method === 'POST') {
 		try {
 			const response = await apiService.request({
 				method: 'post',
-				url: '/auth/send-forgot-password',
-				data: { email, callback_url }
+				url: '/api/user/user/change-password/',
+				headers: {
+					Authorization: 'Bearer ' + req.session.auth?.access ?? ''
+				},
+				data: { old_password, new_password }
 			})
 
 			res.status(response.status).send(response.data)

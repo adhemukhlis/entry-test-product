@@ -1,16 +1,40 @@
-import { Button, Col, Layout, Row, theme } from 'antd'
+'use client'
+import { Avatar, Button, Col, Dropdown, Layout, Row, Space, message, theme } from 'antd'
 import { useRouter } from 'next/router'
-// import axios from 'axios'
+import { DownOutlined } from '@ant-design/icons'
 import Image from 'next/image'
-// import asyncLocalStorage from '@/utils/async-local-storage'
-// import menus from '@/config/menu'
+import axios from 'axios'
+import { useNavbarContext } from '@/context/navbar'
 
 const { Content, Header, Footer } = Layout
 const LayoutComponent = ({ children }) => {
+	const { userData, resetUserData } = useNavbarContext()
 	const router = useRouter()
 	const {
 		token: { colorBgContainer }
 	} = theme.useToken()
+	const items = [
+		{
+			key: '1',
+			label: 'Profile',
+			onClick: () => router.push('/profile')
+		},
+		{
+			key: '2',
+			label: 'Ubah Password',
+			onClick: () => router.push('/wisata-saya')
+		},
+		{
+			key: '3',
+			label: 'Keluar',
+			onClick: async () =>
+				await axios.request({ method: 'post', url: '/api/auth/logout' }).then((res) => {
+					message.info(res.data)
+					resetUserData()
+					router.push('/login')
+				})
+		}
+	]
 
 	// const currentPath = router.pathname
 
@@ -52,7 +76,7 @@ const LayoutComponent = ({ children }) => {
 						background: colorBgContainer
 					}}>
 					<Row justify="center">
-						<Col span={20}>
+						<Col span={22}>
 							<Row gutter={[24, 24]}>
 								<Col span={4}>
 									<div
@@ -75,9 +99,21 @@ const LayoutComponent = ({ children }) => {
 								<Col span={20}>
 									<Row justify="end">
 										<Col>
-											<Button type="primary" shape="round" size="large" href="/login">
-												Login
-											</Button>
+											{userData.isLoggedIn ? (
+												<Space>
+													<Avatar size="large" src={userData.photo} />
+													<Dropdown menu={{ items }} placement="bottomRight" arrow trigger={['click']}>
+														<Button type="text">
+															{userData.username}
+															<DownOutlined />
+														</Button>
+													</Dropdown>
+												</Space>
+											) : (
+												<Button type="primary" shape="round" size="large" href="/login">
+													Login
+												</Button>
+											)}
 										</Col>
 									</Row>
 								</Col>
