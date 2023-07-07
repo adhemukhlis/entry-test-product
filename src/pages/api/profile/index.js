@@ -28,16 +28,6 @@ export default withSessionRoute(async (req, res) => {
 			})
 			res.status(200).send(response.data)
 		} catch (error) {
-			console.log('error.response',error)
-			// if (error?.response?.status === 401) {
-			// 	axios.request({
-			// 		method: 'post',
-			// 		baseURL: 'http://localhost:3055',
-			// 		url: '/api/auth/logout',
-			// 		headers: req ? { cookie: req.headers.cookie } : undefined
-			// 	})
-			// } else {
-			// }
 			res.status(error?.response?.status ?? 500).send(error?.response?.data ?? error)
 		}
 	} else {

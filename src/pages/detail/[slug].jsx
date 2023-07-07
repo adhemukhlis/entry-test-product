@@ -1,4 +1,4 @@
-import { Typography, theme, Row, Col, Card, Tag, Avatar, Button } from 'antd'
+import { Typography, theme, Row, Col, Card, Tag, Avatar, Button, Result } from 'antd'
 import Image from 'next/image'
 import { useRouter } from 'next/router'
 import { upper } from 'case'
@@ -14,12 +14,12 @@ require('dayjs/locale/id')
 const { Title, Text, Paragraph } = Typography
 const { useToken } = theme
 
-const Index = ({ touristObjectDetail }) => {
+const Index = ({ isNotFound, touristObjectDetail }) => {
 	const router = useRouter()
 	const { token } = useToken()
-	const [long, lat] = touristObjectDetail.location.coordinates
+	const [long, lat] = touristObjectDetail?.location?.coordinates || [0, 0]
 	const DEFAULT_CENTER = [lat, long]
-	return (
+	return !isNotFound ? (
 		<>
 			<Row justify="center">
 				<Col {...{ xs: 24, sm: 24, md: 24, lg: 20, xl: 20 }}>
@@ -101,6 +101,7 @@ const Index = ({ touristObjectDetail }) => {
 							</Col>
 						</Row>
 						<div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', width: '100%', gap: '1rem' }}>
+
 							<Text strong>Share Wisata ini</Text>
 							<ShareButton />
 						</div>
@@ -123,11 +124,21 @@ const Index = ({ touristObjectDetail }) => {
 				</Col>
 			</Row>
 		</>
+	) : (
+		<>
+			<Result
+				status="404"
+				title="404"
+				subTitle="Sorry, the page you visited does not exist."
+				extra={<Button onClick={() => router.back()}>Back</Button>}
+			/>
+		</>
 	)
 }
 export default Index
-export const getServerSideProps = withSession(async ({ req, query }) => {
+export const getServerSideProps = withSession(async ({ query }) => {
 	const hasSlug = !!query?.slug
+	let isNotFound = false
 	const errors = []
 	let touristObjectDetail = {}
 	if (![hasSlug].includes(false)) {
@@ -135,10 +146,17 @@ export const getServerSideProps = withSession(async ({ req, query }) => {
 		if (responseTouristObjectSlug.status === 200) {
 			const { data } = responseTouristObjectSlug.response
 			touristObjectDetail = data || {}
+		} else if (responseTouristObjectSlug.status === 404) {
+			console.log('responseTouristObjectSlug', responseTouristObjectSlug.error)
+			isNotFound = true
+			errors.push({
+				url: responseTouristObjectSlug.url,
+				message: responseTouristObjectSlug.error.response.data.detail
+			})
 		} else {
 			errors.push({
 				url: responseTouristObjectSlug.url,
-				message: responseTouristObjectSlug.error.response.data.message
+				message: responseTouristObjectSlug.error.response.data.detail
 			})
 		}
 	}
@@ -146,6 +164,7 @@ export const getServerSideProps = withSession(async ({ req, query }) => {
 	return {
 		props: {
 			errors,
+			isNotFound,
 			touristObjectDetail
 		}
 	}

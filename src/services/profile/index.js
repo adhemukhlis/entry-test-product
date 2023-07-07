@@ -12,6 +12,5 @@ export const getProfile = async (access_token) =>
 			return res
 		})
 		.catch((err) => {
-			console.log('errrrrr', err.response)
 			throw err
 		})

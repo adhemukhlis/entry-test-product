@@ -23,7 +23,7 @@ const App = ({ Component, pageProps, profileData, isLoggedIn }) => {
 						colorPrimary: '#F7911A'
 					}
 				}}>
-				<NavbarContextProvider defaultValues={{...profileData, isLoggedIn}}>
+				<NavbarContextProvider defaultValues={{ ...profileData, isLoggedIn }}>
 					{PUBLIC_PAGE_URL.includes(router.pathname) ? (
 						<div
 							style={{
