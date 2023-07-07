@@ -4,6 +4,7 @@ import Image from 'next/image'
 import { isBoolean, isEmpty, isNumber, omit, pickBy } from 'lodash'
 import { useRouter } from 'next/router'
 import { upper } from 'case'
+import Link from 'next/link'
 import { withSession } from '@/utils/session-wrapper'
 import { getProfile } from '@/services/profile'
 import axiosGroup from '@/utils/axiosGroup'
@@ -54,32 +55,34 @@ const Index = ({ query, profileData, isLoggedIn, touristObjectList, touristObjec
 				<Row gutter={[24, 24]} style={{ marginTop: '2rem', width: '100%' }}>
 					{touristObjectList.map((item, index) => (
 						<Col key={`card-${index}`} {...{ xs: 24, sm: 24, md: 8, lg: 8, xl: 8 }}>
-							<Card style={{ width: '100%' }} hoverable>
-								<div
-									style={{
-										width: '100%',
-										height: '100%',
-										display: 'flex',
-										alignItems: 'center'
-									}}>
-									<Image
-										src={item.image}
-										width="0"
-										height="0"
-										sizes="200px"
-										style={{ width: '100%', height: 'auto', borderRadius: '0.4rem' }}
-										alt="logo"
-									/>
-								</div>
-								<div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', marginBottom: '1rem' }}>
-									<Tag bordered={false} color="orange" style={{ borderRadius: '10px' }}>
-										{upper(item.category)}
-									</Tag>
-									<Text strong>{idrFormatter(parseInt(item.price))}</Text>
-								</div>
-								<Title level={5}>{item.name}</Title>
-								<div className="text-ellipsis-2" dangerouslySetInnerHTML={{ __html: item.description }} />
-							</Card>
+							<Link href={'/detail/' + item.slug}>
+								<Card style={{ width: '100%' }} hoverable>
+									<div
+										style={{
+											width: '100%',
+											height: '100%',
+											display: 'flex',
+											alignItems: 'center'
+										}}>
+										<Image
+											src={item.image}
+											width="0"
+											height="0"
+											sizes="200px"
+											style={{ width: '100%', height: 'auto', borderRadius: '0.4rem' }}
+											alt="logo"
+										/>
+									</div>
+									<div style={{ display: 'flex', justifyContent: 'space-between', marginTop: '1rem', marginBottom: '1rem' }}>
+										<Tag bordered={false} color="orange" style={{ borderRadius: '10px' }}>
+											{upper(item.category)}
+										</Tag>
+										<Text strong>{idrFormatter(parseInt(item.price))}</Text>
+									</div>
+									<Title level={5}>{item.name}</Title>
+									<div className="text-ellipsis-2" dangerouslySetInnerHTML={{ __html: item.description }} />
+								</Card>
+							</Link>
 						</Col>
 					))}
 				</Row>

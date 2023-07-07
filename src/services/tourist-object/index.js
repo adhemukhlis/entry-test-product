@@ -12,6 +12,18 @@ export const getTouristObject = async (query) =>
 		.catch((err) => {
 			throw err
 		})
+export const getTouristObjectSlug = async (slug) =>
+	await apiService
+		.request({
+			method: 'get',
+			url: `/api/tourist-object/tourist-object/${slug}/`
+		})
+		.then((res) => {
+			return res
+		})
+		.catch((err) => {
+			throw err
+		})
 export const getTouristObjectMe = async (access_token, query) =>
 	await apiService
 		.request({

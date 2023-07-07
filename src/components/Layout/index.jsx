@@ -4,6 +4,7 @@ import { useRouter } from 'next/router'
 import { DownOutlined } from '@ant-design/icons'
 import Image from 'next/image'
 import axios from 'axios'
+import Link from 'next/link'
 import { useNavbarContext } from '@/context/navbar'
 
 const { Content, Header, Footer } = Layout
@@ -79,22 +80,24 @@ const LayoutComponent = ({ children }) => {
 						<Col span={22}>
 							<Row gutter={[24, 24]}>
 								<Col span={4}>
-									<div
-										style={{
-											width: '100%',
-											height: '100%',
-											display: 'flex',
-											alignItems: 'center'
-										}}>
-										<Image
-											src="/logo.png"
-											width="0"
-											height="0"
-											sizes="200px"
-											style={{ width: '80%', height: 'auto' }}
-											alt="logo"
-										/>
-									</div>
+									<Link href="/">
+										<div
+											style={{
+												width: '100%',
+												height: '100%',
+												display: 'flex',
+												alignItems: 'center'
+											}}>
+											<Image
+												src="/logo.png"
+												width="0"
+												height="0"
+												sizes="200px"
+												style={{ width: '65%', height: 'auto' }}
+												alt="logo"
+											/>
+										</div>
+									</Link>
 								</Col>
 								<Col span={20}>
 									<Row justify="end">
