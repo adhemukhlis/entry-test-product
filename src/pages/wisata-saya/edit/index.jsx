@@ -6,7 +6,7 @@ export default RedirectEmpty
 export const getServerSideProps = withSession(async () => {
 	return {
 		redirect: {
-			destination: '/',
+			destination: '/wisata-saya',
 			permanent: false
 		}
 	}

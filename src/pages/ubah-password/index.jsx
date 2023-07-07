@@ -5,7 +5,7 @@ import { useState } from 'react'
 
 const { Title } = Typography
 
-const Forgot = () => {
+const UbahPassword = () => {
 	const [loading, setLoading] = useState(false)
 	const router = useRouter()
 	const [form] = Form.useForm()
@@ -105,4 +105,4 @@ const Forgot = () => {
 		</Row>
 	)
 }
-export default Forgot
+export default UbahPassword

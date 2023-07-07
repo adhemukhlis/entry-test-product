@@ -101,7 +101,6 @@ const Index = ({ isNotFound, touristObjectDetail }) => {
 							</Col>
 						</Row>
 						<div style={{ marginTop: '2rem', display: 'flex', flexDirection: 'column', width: '100%', gap: '1rem' }}>
-
 							<Text strong>Share Wisata ini</Text>
 							<ShareButton />
 						</div>

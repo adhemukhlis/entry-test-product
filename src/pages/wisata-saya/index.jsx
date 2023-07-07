@@ -1,4 +1,7 @@
 import { Button, Col, Popconfirm, Row, Space } from 'antd'
+import axios from 'axios'
+import useMediaQuery from 'use-media-antd-query'
+import { useRouter } from 'next/router'
 import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
 import MainTabs from '@/components/Tabs'
 import MainTable from '@/components/Table'
@@ -6,11 +9,27 @@ import { withSession } from '@/utils/session-wrapper'
 import axiosGroup from '@/utils/axiosGroup'
 import routeGuard from '@/utils/route-guard'
 import { getTouristObjectMe } from '@/services/tourist-object'
+import idrFormatter from '@/utils/idrFormatter'
+const responsiveTabPosition = {
+	xs: 'top',
+	sm: 'top',
+	md: 'top'
+}
 const tab_items = [
 	{ label: 'Profile', key: '/profile' },
 	{ label: 'Wisata Saya', key: '/wisata-saya' }
 ]
 const WisataSaya = ({ query, touristObjectMeData }) => {
+	const router = useRouter()
+	const colSize = useMediaQuery()
+	const handleDeleteTouristObject = async (slug) => {
+		return await axios.request({
+			method: 'delete',
+			url: '/api/tourist-object/' + slug
+		}).then(()=>{
+			router.reload()
+		})
+	}
 	const columns = [
 		{ title: 'No', render: (value, row, index) => (query.page - 1) * query.per_page + index + 1 },
 		{
@@ -18,7 +37,7 @@ const WisataSaya = ({ query, touristObjectMeData }) => {
 			dataIndex: 'name',
 			title: 'Nama'
 		},
-		{ key: 'price', dataIndex: 'price', title: 'Harga' },
+		{ key: 'price', dataIndex: 'price', title: 'Harga', render: (value) => idrFormatter(parseInt(value)) },
 		{
 			key: 'category',
 			dataIndex: 'category',
@@ -29,15 +48,27 @@ const WisataSaya = ({ query, touristObjectMeData }) => {
 			width: 160,
 			dataIndex: 'action',
 			title: 'Action',
-			render: () => (
+			render: (value, row, index) => (
 				<Space>
-					<Button type="text" icon={<ExclamationCircleOutlined />} />
-					<Button type="text" icon={<EditOutlined />} />
+					<Button
+						type="text"
+						icon={<ExclamationCircleOutlined />}
+						onClick={() => {
+							router.push('/detail/' + row.slug)
+						}}
+					/>
+					<Button
+						type="text"
+						icon={<EditOutlined />}
+						onClick={() => {
+							router.push('/wisata-saya/edit/' + row.slug)
+						}}
+					/>
 					<Popconfirm
 						placement="bottom"
 						title="konfirmasi delete"
 						description="yakin ingin menghapus data ini?"
-						onConfirm={() => {}}
+						onConfirm={async () => await handleDeleteTouristObject(row.slug)}
 						okText="Yes"
 						cancelText="No">
 						<Button type="text" icon={<DeleteOutlined />} />
@@ -50,7 +81,7 @@ const WisataSaya = ({ query, touristObjectMeData }) => {
 		<div>
 			<Row>
 				<Col {...{ xs: 24, sm: 24, md: 24, lg: 4 }}>
-					<MainTabs tabPosition="left" items={tab_items} />
+					<MainTabs tabPosition={responsiveTabPosition[colSize] ?? 'left'} items={tab_items} />
 				</Col>
 				<Col {...{ xs: 24, sm: 24, md: 24, lg: 20 }}>
 					<MainTable rowKey="id" dataSource={touristObjectMeData} columns={columns} query={query} />
@@ -85,7 +116,7 @@ export const getServerSideProps = withSession(async ({ req, query }) => {
 			})
 		}
 	}
-	return routeGuard(validator, '/', {
+	return routeGuard(validator, '/login', {
 		props: { errors, query: queryMerge, touristObjectMeData }
 	})
 })

@@ -64,10 +64,7 @@ const Profile = ({ profileData }) => {
 				<Col {...{ xs: 24, sm: 24, md: 24, lg: 20 }}>
 					<Row gutter={[24, 24]}>
 						<Col {...{ xs: 24, sm: 24, md: 4, lg: 4 }}>
-							<UploadProfile
-								onReadyUpload={handleUpload}
-								imageUrl={profileDataLocal?.photo ?? 'https://source.unsplash.com/random/200x200/?avatar'}
-							/>
+							<UploadProfile onReadyUpload={handleUpload} imageUrl={profileDataLocal?.photo ?? ''} />
 						</Col>
 						<Col {...{ xs: 24, sm: 24, md: 16, lg: 16 }}>
 							<Title level={5}>{profileDataLocal.full_name}</Title>{' '}
@@ -135,7 +132,7 @@ export const getServerSideProps = withSession(async ({ req }) => {
 			})
 		}
 	}
-	return routeGuard(validator, '/', {
+	return routeGuard(validator, '/login', {
 		props: { errors, profileData }
 	})
 })

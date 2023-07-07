@@ -30,7 +30,6 @@ import React, { useState, useEffect } from 'react'
 import { Upload, message, Modal, Button } from 'antd'
 import { LoadingOutlined, UploadOutlined, CloseOutlined } from '@ant-design/icons'
 import PropTypes from 'prop-types'
-import { isEmpty } from 'lodash'
 import 'antd/es/modal/style'
 import 'antd/es/slider/style'
 
@@ -59,21 +58,23 @@ const UploadProfile = ({ maxSize, aspect, onReadyUpload, imageUrl }) => {
 	const [loading, setLoading] = useState(false)
 	const [fileList, setFileList] = useState([])
 	useEffect(() => {
-		const initState = [
-			{
-				uid: generateRandomKey(),
-				name: 'Photo',
-				status: 'done',
-				...(typeof imageUrl === 'string'
-					? { url: imageUrl }
-					: imageUrl !== null && imageUrl !== undefined
-					? {
-							originFileObj: imageUrl
-					  }
-					: {})
-			}
-		]
-		setFileList(initState)
+		if (!!imageUrl || imageUrl !== '') {
+			const initState = [
+				{
+					uid: generateRandomKey(),
+					name: 'Photo',
+					status: 'done',
+					...(typeof imageUrl === 'string'
+						? { url: imageUrl }
+						: imageUrl !== null && imageUrl !== undefined
+						? {
+								originFileObj: imageUrl
+						  }
+						: {})
+				}
+			]
+			setFileList(initState)
+		}
 	}, [imageUrl])
 	const [previewVisible, setPreviewVisible] = useState(false)
 	const [previewImage, setPreviewImage] = useState(undefined)
@@ -114,10 +115,7 @@ const UploadProfile = ({ maxSize, aspect, onReadyUpload, imageUrl }) => {
 	}
 	const handleChange = async ({ fileList: newFileList }) => {
 		if (newFileList.length !== 0) {
-			console.log(newFileList)
 			if (allowFileType.includes(newFileList[0].type)) {
-				// setFile(true)
-				// setFileList(newFileList)
 				setLoading(false)
 				onReadyUpload(newFileList[0].originFileObj)
 			} else {
@@ -154,9 +152,8 @@ const UploadProfile = ({ maxSize, aspect, onReadyUpload, imageUrl }) => {
 			</div>
 		</div>
 	)
-	return !isEmpty(imageUrl) ? (
+	return (
 		<div id="upload-profile">
-			{/* <ImgCrop aspect={4 / 3} rotate> */}
 			<Upload
 				loading
 				name="image-file"
@@ -168,7 +165,6 @@ const UploadProfile = ({ maxSize, aspect, onReadyUpload, imageUrl }) => {
 				onRemove={handleRemove}>
 				{fileList.length === 0 && uploadButton}
 			</Upload>
-			{/* </ImgCrop> */}
 			<Modal visible={previewVisible} title={previewTitle} footer={null} onCancel={handleCancel}>
 				<img
 					alt="example"
@@ -179,7 +175,7 @@ const UploadProfile = ({ maxSize, aspect, onReadyUpload, imageUrl }) => {
 				/>
 			</Modal>
 		</div>
-	) : null
+	)
 }
 
 UploadProfile.defaultProps = {
