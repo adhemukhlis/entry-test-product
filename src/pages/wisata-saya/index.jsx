@@ -1,8 +1,9 @@
-import { Button, Col, Popconfirm, Row, Space } from 'antd'
+import { Button, Col, Form, Input, Popconfirm, Row, Space } from 'antd'
 import axios from 'axios'
 import useMediaQuery from 'use-media-antd-query'
 import { useRouter } from 'next/router'
-import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined } from '@ant-design/icons'
+import { DeleteOutlined, EditOutlined, ExclamationCircleOutlined, PlusCircleOutlined } from '@ant-design/icons'
+import { isBoolean, isEmpty, isNumber, omit, pickBy } from 'lodash'
 import MainTabs from '@/components/Tabs'
 import MainTable from '@/components/Table'
 import { withSession } from '@/utils/session-wrapper'
@@ -21,13 +22,25 @@ const tab_items = [
 ]
 const WisataSaya = ({ query, touristObjectMeData }) => {
 	const router = useRouter()
+	const [form] = Form.useForm()
 	const colSize = useMediaQuery()
 	const handleDeleteTouristObject = async (slug) => {
-		return await axios.request({
-			method: 'delete',
-			url: '/api/tourist-object/' + slug
-		}).then(()=>{
-			router.reload()
+		return await axios
+			.request({
+				method: 'delete',
+				url: '/api/tourist-object/' + slug
+			})
+			.then(() => {
+				router.reload()
+			})
+	}
+	const handleFilter = () => {
+		const values = form.getFieldsValue()
+		const other = omit(query, ['total', 'per_page'])
+		const params = pickBy({ ...other, ...values }, (v) => isNumber(v) || isBoolean(v) || !isEmpty(v))
+		router.push({
+			pathname: '/wisata-saya',
+			query: params
 		})
 	}
 	const columns = [
@@ -84,6 +97,22 @@ const WisataSaya = ({ query, touristObjectMeData }) => {
 					<MainTabs tabPosition={responsiveTabPosition[colSize] ?? 'left'} items={tab_items} />
 				</Col>
 				<Col {...{ xs: 24, sm: 24, md: 24, lg: 20 }}>
+					<div style={{ width: '100%', display: 'flex', justifyContent: 'flex-end', marginBottom: '1rem' }}>
+					<Form  form={form} layout="inline" initialValues={query} autoComplete="off">
+					<Form.Item name="search" style={{ width: '10rem' }}>
+						<Input.Search placeholder="Cari" onSearch={handleFilter} allowClear />
+					</Form.Item>
+				</Form>
+						<Button
+							size="large"
+							type="primary"
+							shape="round"
+							icon={<PlusCircleOutlined />}
+							onClick={() => router.push('/wisata-saya/add')}>
+							Tambah
+						</Button>
+					</div>
+
 					<MainTable rowKey="id" dataSource={touristObjectMeData} columns={columns} query={query} />
 				</Col>
 			</Row>
