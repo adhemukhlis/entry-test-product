@@ -15,7 +15,7 @@ const Map = ({ children, className, width, height, ...rest }) => {
 	}
 
 	useEffect(() => {
-		;(async function init() {
+		(async function init() {
 			delete Leaflet.Icon.Default.prototype._getIconUrl
 			Leaflet.Icon.Default.mergeOptions({
 				iconRetinaUrl: '/assets/images/leaflet/marker-icon-2x.png',
