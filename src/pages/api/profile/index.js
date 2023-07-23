@@ -16,8 +16,7 @@ export default withSessionRoute(async (req, res) => {
 		} catch (error) {
 			res.status(error.response.status ?? 500).send(error.response.data ?? error)
 		}
-	}
-	if (req.method === 'GET') {
+	} else if (req.method === 'GET') {
 		try {
 			const response = await apiService.request({
 				method: 'get',

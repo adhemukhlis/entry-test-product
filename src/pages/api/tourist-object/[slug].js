@@ -17,7 +17,7 @@ export default withSessionRoute(async (req, res) => {
 		}
 	} else if (req.method === 'PATCH') {
 		try {
-			const { data } = await apiService.patch(`/api/tourist-object/tourist-object/${req.query.slug}`, req, {
+			const { data } = await apiService.patch(`/api/tourist-object/tourist-object/${req.query.slug}/`, req, {
 				responseType: 'stream',
 				headers: {
 					'Content-Type': req.headers['content-type'],

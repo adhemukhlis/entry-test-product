@@ -23,7 +23,7 @@ const LayoutComponent = ({ children }) => {
 		{
 			key: '2',
 			label: 'Ubah Password',
-			onClick: () => router.push('/wisata-saya')
+			onClick: () => router.push('/ubah-password')
 		},
 		{
 			key: '3',

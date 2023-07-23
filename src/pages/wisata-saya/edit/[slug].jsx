@@ -54,6 +54,10 @@ const EditWisataSaya = ({ query, isNotFound, touristObjectDetail, touristObjectL
 				data: body
 			})
 			.then(() => {
+			console.log(
+				"hehe",
+				"haha"
+			);
 				messageApi.success('Data berhasl disimpan!')
 			})
 			.finally(() => {

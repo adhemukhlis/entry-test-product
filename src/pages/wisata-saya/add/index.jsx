@@ -36,10 +36,11 @@ const AddWisataSaya = ({ query, isNotFound, touristObjectListCategory }) => {
 	const [loading, setLoading] = useState(false)
 
 	const handleSubmit = async (values) => {
+		console.log('typeof price',typeof values.price)
 		setLoading(true)
 		const body = {
 			...values,
-			price: String(values.string),
+			price: String(values.price),
 			location: {
 				type: 'Point',
 				coordinates: [110.274136, -7.855787]
